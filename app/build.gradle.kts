@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.harish.tmdbapp"
+    namespace = "com.harish.tvshows"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.harish.tmdbapp"
+        applicationId = "com.harish.tvshows"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -52,10 +52,14 @@ android {
 
 dependencies {
 
+    implementation(project(mapOf("path" to ":tvshows")))
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.androidx.junit.ktx)
-    testImplementation("junit:junit:4.12")
-    androidTestImplementation("junit:junit:4.12")
+    implementation(libs.appcompat)
+    implementation(libs.material)
+    implementation(libs.constraintlayout)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.junit)
 
 }

@@ -1,4 +1,4 @@
-package com.harish.movies
+package com.harish.tvshows
 
 import org.junit.Test
 

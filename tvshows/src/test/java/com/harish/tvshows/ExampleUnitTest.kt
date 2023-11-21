@@ -1,4 +1,4 @@
-package com.harish.tmdbapp
+package com.harish.tvshows
 
 import org.junit.Test
 
