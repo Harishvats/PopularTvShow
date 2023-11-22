@@ -3,7 +3,7 @@ package com.harish.domain.model
 
 
 data class TvShowListModel(
-    val tvShowDTOS: List<TvShowModel>
+    val tvShowModelList: List<TvShowModel>
 )
 
 data class TvShowModel(

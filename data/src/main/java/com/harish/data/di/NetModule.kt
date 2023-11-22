@@ -18,6 +18,7 @@ class NetModule {
     private val json = Json {
         ignoreUnknownKeys = true
         encodeDefaults= true
+        coerceInputValues=true
     }
     @Singleton
     @Provides

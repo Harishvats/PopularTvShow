@@ -37,12 +37,12 @@ android {
 }
 
 dependencies {
+    implementation(project(mapOf("path" to ":core")))
 
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.hilt.android)
-    implementation(project(mapOf("path" to ":core")))
     kapt(libs.hilt.android.compiler)
 
     testImplementation(libs.junit)

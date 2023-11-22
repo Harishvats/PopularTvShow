@@ -9,9 +9,7 @@ data class TvShowDetailsDTO(
     @SerialName("adult")
     val adult: Boolean,
     @SerialName("backdrop_path")
-    val backdropPath: String,
-    @SerialName("created_by")
-    val createdBy: List<Any>,
+    val backdropPath: String="",
     @SerialName("episode_run_time")
     val episodeRunTime: List<Int>,
     @SerialName("first_air_date")
@@ -97,13 +95,13 @@ data class LastEpisodeToAir(
     @SerialName("production_code")
     val productionCode: String,
     @SerialName("runtime")
-    val runtime: Any,
+    val runtime: Int,
     @SerialName("season_number")
     val seasonNumber: Int,
     @SerialName("show_id")
     val showId: Int,
     @SerialName("still_path")
-    val stillPath: Any,
+    val stillPath: String,
     @SerialName("vote_average")
     val voteAverage: Int,
     @SerialName("vote_count")
@@ -139,13 +137,13 @@ data class NextEpisodeToAir(
     @SerialName("production_code")
     val productionCode: String,
     @SerialName("runtime")
-    val runtime: Any,
+    val runtime: Int,
     @SerialName("season_number")
     val seasonNumber: Int,
     @SerialName("show_id")
     val showId: Int,
     @SerialName("still_path")
-    val stillPath: Any,
+    val stillPath: String,
     @SerialName("vote_average")
     val voteAverage: Int,
     @SerialName("vote_count")
@@ -185,7 +183,7 @@ data class Season(
     @SerialName("overview")
     val overview: String,
     @SerialName("poster_path")
-    val posterPath: Any,
+    val posterPath: String,
     @SerialName("season_number")
     val seasonNumber: Int,
     @SerialName("vote_average")
