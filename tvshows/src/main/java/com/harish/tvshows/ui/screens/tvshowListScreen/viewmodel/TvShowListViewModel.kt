@@ -1,9 +1,13 @@
-package com.harish.tvshows.tvshowListScreen
+package com.harish.tvshows.ui.screens.tvshowListScreen.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harish.core.common.Response
 import com.harish.domain.usecases.GetPopularTvShowsUseCase
+import com.harish.tvshows.mapper.TvShowListDomainToUiMapper
+import com.harish.tvshows.ui.screens.tvshowListScreen.state.TvShowListScreenIntent
+import com.harish.tvshows.ui.screens.tvshowListScreen.state.TvShowListScreenSideEffect
+import com.harish.tvshows.ui.screens.tvshowListScreen.state.TvShowListScreenViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +17,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TvShowListViewModel @Inject constructor(private val getPopularTvShowsUseCase: GetPopularTvShowsUseCase) :
+class TvShowListViewModel @Inject constructor(private val getPopularTvShowsUseCase: GetPopularTvShowsUseCase,
+    private val tvShowListDomainToUiMapper: TvShowListDomainToUiMapper
+) :
     ViewModel() {
 
     private val _tvShowListViewStateFlow =
@@ -24,14 +30,14 @@ class TvShowListViewModel @Inject constructor(private val getPopularTvShowsUseCa
     val effect = _effect.receiveAsFlow()
 
 
-    private fun getMovieList() {
+    private fun getTvShowList() {
         _tvShowListViewStateFlow.value = TvShowListScreenViewState.Loading
 
         viewModelScope.launch {
             when (val result = getPopularTvShowsUseCase()) {
 
                 is Response.Success -> _tvShowListViewStateFlow.value =
-                    TvShowListScreenViewState.Success(result.data.tvShowModelList)
+                    TvShowListScreenViewState.Success(tvShowListDomainToUiMapper.mapFromDomainToUi(result.data))
 
                 is Response.Error -> _tvShowListViewStateFlow.value =
                     TvShowListScreenViewState.Error(result.message)
@@ -43,7 +49,7 @@ class TvShowListViewModel @Inject constructor(private val getPopularTvShowsUseCa
 
     fun sendEvent(tvShowListScreenIntent: TvShowListScreenIntent) {
         when (tvShowListScreenIntent) {
-            TvShowListScreenIntent.FetchTvShowList -> getMovieList()
+            TvShowListScreenIntent.FetchTvShowList -> getTvShowList()
             else -> {}
         }
 

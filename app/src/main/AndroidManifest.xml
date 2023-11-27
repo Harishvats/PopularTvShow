@@ -15,7 +15,7 @@
         android:theme="@style/Theme.TvShows"
         tools:targetApi="31">
         <activity
-            android:name="com.harish.tvshows.MainActivity"
+            android:name="com.harish.tvshows.ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
