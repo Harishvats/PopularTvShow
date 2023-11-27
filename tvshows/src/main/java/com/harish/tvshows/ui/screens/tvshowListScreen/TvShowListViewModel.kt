@@ -1,4 +1,4 @@
-package com.harish.tvshows.tvshowListScreen
+package com.harish.tvshows.ui.screens.tvshowListScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,7 +24,7 @@ class TvShowListViewModel @Inject constructor(private val getPopularTvShowsUseCa
     val effect = _effect.receiveAsFlow()
 
 
-    private fun getMovieList() {
+    private fun getTvShowList() {
         _tvShowListViewStateFlow.value = TvShowListScreenViewState.Loading
 
         viewModelScope.launch {
@@ -43,7 +43,7 @@ class TvShowListViewModel @Inject constructor(private val getPopularTvShowsUseCa
 
     fun sendEvent(tvShowListScreenIntent: TvShowListScreenIntent) {
         when (tvShowListScreenIntent) {
-            TvShowListScreenIntent.FetchTvShowList -> getMovieList()
+            TvShowListScreenIntent.FetchTvShowList -> getTvShowList()
             else -> {}
         }
 

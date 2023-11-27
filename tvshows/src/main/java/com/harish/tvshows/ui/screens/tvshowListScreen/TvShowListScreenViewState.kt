@@ -1,4 +1,4 @@
-package com.harish.tvshows.tvshowListScreen
+package com.harish.tvshows.ui.screens.tvshowListScreen
 
 import com.harish.core.common.ui.base.SideEffect
 import com.harish.core.common.ui.base.ViewIntent
