@@ -1,6 +1,5 @@
 package com.harish.data.repository.datasource
 
-import com.harish.core.common.Response
 import com.harish.data.BuildConfig
 import com.harish.data.api.NetworkService
 import com.harish.data.mapper.TvShowDetailDtoMapper
@@ -16,37 +15,37 @@ class RemoteDataSourceImpl @Inject constructor(
     private val tvShowListDTOMapper: TvShowListDTOMapper,
     private val tvShowDetailDtoMapper: TvShowDetailDtoMapper
 ) : RemoteDataSource {
-    override suspend fun getPopularTvShows(): Response<TvShowListModel> {
+    override suspend fun getPopularTvShows(): Result<TvShowListModel> {
         return try {
             val response = networkService.getPopularTvShows(BuildConfig.API_KEY)
             if (response.isSuccessful) {
 
                 val body = response.body()
-                Response.Success(body?.let { tvShowListDTOMapper.mapFromDTOToDomain(it) }!!)
+                Result.success(body?.let { tvShowListDTOMapper.mapFromDTOToDomain(it) }!!)
             } else {
-                Response.Error(response.message())
+                Result.failure(Throwable(response.message()))
             }
         } catch (e: HttpException) {
-            Response.Error(e.localizedMessage ?: "")
+            Result.failure(e)
         } catch (e: IOException) {
-            Response.Error(e.localizedMessage ?: "")
+            Result.failure(e)
         }
 
     }
 
-    override suspend fun getTvShowDetails(seriesId: Int): Response<TvShowDetailsModel> {
+    override suspend fun getTvShowDetails(seriesId: Int): Result<TvShowDetailsModel> {
         return try {
             val response = networkService.getTvShowDetails(seriesId, BuildConfig.API_KEY)
             if (response.isSuccessful) {
                 val body = response.body()
-                Response.Success(body?.let { tvShowDetailDtoMapper.mapFromDTOToDomain(it) }!!)
+                Result.success(body?.let { tvShowDetailDtoMapper.mapFromDTOToDomain(it) }!!)
             } else {
-                Response.Error(response.message())
+                Result.failure(Throwable(response.message()))
             }
         } catch (e: HttpException) {
-            Response.Error(e.localizedMessage ?: "")
+            Result.failure(e)
         } catch (e: IOException) {
-            Response.Error(e.localizedMessage ?: "")
+            Result.failure(e)
         }
     }
 }
