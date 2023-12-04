@@ -27,13 +27,13 @@ data class TvShowDetailsDTO(
     @SerialName("last_air_date")
     val lastAirDate: String,
     @SerialName("last_episode_to_air")
-    val lastEpisodeToAir: LastEpisodeToAir,
+    val lastEpisodeToAir: LastEpisodeToAir?,
     @SerialName("name")
     val name: String,
     @SerialName("networks")
     val networks: List<Network>,
     @SerialName("next_episode_to_air")
-    val nextEpisodeToAir: NextEpisodeToAir,
+    val nextEpisodeToAir: NextEpisodeToAir?,
     @SerialName("number_of_episodes")
     val numberOfEpisodes: Int,
     @SerialName("number_of_seasons")
