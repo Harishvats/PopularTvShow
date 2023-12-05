@@ -6,8 +6,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import com.harish.news.R
+import com.harish.tvshows.ui.components.LoadingUI
 import com.harish.tvshows.ui.screens.tvshowListScreen.state.TvShowListScreenIntent
 import com.harish.tvshows.ui.screens.tvshowListScreen.state.TvShowListScreenViewState
 import com.harish.tvshows.ui.screens.tvshowListScreen.viewmodel.TvShowListViewModel
@@ -37,11 +36,7 @@ fun TvShowListScreen(
             Toast.LENGTH_SHORT
         ).show()
 
-        is TvShowListScreenViewState.Loading -> Toast.makeText(
-            context,
-            stringResource(id = R.string.fetching_tvshows),
-            Toast.LENGTH_SHORT
-        ).show()
+        is TvShowListScreenViewState.Loading -> LoadingUI()
 
         is TvShowListScreenViewState.Success -> {
             val value = (result as TvShowListScreenViewState.Success).data.tvShowModelList

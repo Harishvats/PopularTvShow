@@ -1,7 +1,8 @@
 package com.harish.tvshows.ui.screens.tvshowListScreen.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.harish.core.common.ui.base.BaseViewModel
+import com.harish.core.common.ui.base.ViewIntent
 import com.harish.domain.usecases.GetPopularTvShowsUseCase
 import com.harish.tvshows.mapper.TvShowListDomainToUiMapper
 import com.harish.tvshows.ui.screens.tvshowListScreen.state.TvShowListScreenIntent
@@ -17,7 +18,7 @@ import javax.inject.Inject
 class TvShowListViewModel @Inject constructor(
     private val getPopularTvShowsUseCase: GetPopularTvShowsUseCase,
     private val tvShowListDomainToUiMapper: TvShowListDomainToUiMapper
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _tvShowListViewStateFlow =
         MutableStateFlow<TvShowListScreenViewState>(TvShowListScreenViewState.Loading)
@@ -42,8 +43,9 @@ class TvShowListViewModel @Inject constructor(
         }
     }
 
-    fun sendEvent(tvShowListScreenIntent: TvShowListScreenIntent) {
-        when (tvShowListScreenIntent) {
+
+    override fun sendEvent(viewIntent: ViewIntent) {
+        when (viewIntent) {
             TvShowListScreenIntent.FetchTvShowList -> getTvShowList()
             else -> {}
         }

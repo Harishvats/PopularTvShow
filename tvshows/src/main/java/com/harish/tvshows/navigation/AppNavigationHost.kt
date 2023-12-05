@@ -12,6 +12,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.harish.news.R
 import com.harish.tvshows.ui.components.BaseScreen
+import com.harish.tvshows.ui.screens.tvShowDetailsScreen.TvShowDetailsScreen
+import com.harish.tvshows.ui.screens.tvShowDetailsScreen.viewmodel.TvShowDetailsViewModel
 import com.harish.tvshows.ui.screens.tvshowListScreen.TvShowListScreen
 import com.harish.tvshows.ui.screens.tvshowListScreen.viewmodel.TvShowListViewModel
 import com.harish.tvshows.utils.AppConstants.Companion.SELECTED_TV_SHOW_ID
@@ -26,7 +28,10 @@ fun AppNavigationHost(navController: NavHostController = rememberNavController()
         composable(route = NavigationDestination.TvShowListScreenDestination.destination) {
             val tvShowListViewModel = hiltViewModel<TvShowListViewModel>()
 
-            BaseScreen(title = stringResource(id = R.string.tvshow), isSecondaryHeader = false, onBackClick = {}) {
+            BaseScreen(
+                title = stringResource(id = R.string.tvshow),
+                isSecondaryHeader = false,
+                onBackClick = {}) {
                 TvShowListScreen(tvShowListViewModel = tvShowListViewModel) { id, name ->
                     navController.navigate("${NavigationDestination.TvShowDetailScreenDestination.destination}/$id/$name")
                 }
@@ -43,14 +48,20 @@ fun AppNavigationHost(navController: NavHostController = rememberNavController()
             })
         ) {
             it.arguments?.getString(SELECTED_TV_SHOW_TITLE)?.let { it1 ->
+                val tvShowDetailsViewModel = hiltViewModel<TvShowDetailsViewModel>()
                 BaseScreen(
                     title = it1,
                     isSecondaryHeader = true,
                     onBackClick = {
-                        Log.d("Harish","clock")
-                        navController.navigateUp()}
+                        Log.d("Harish", "clock")
+                        navController.navigateUp()
+                    }
                 ) {
-
+                    val id = it.arguments!!.getInt(SELECTED_TV_SHOW_ID)
+                    TvShowDetailsScreen(
+                        tvShowDetailsViewModel = tvShowDetailsViewModel,
+                        selectedTvSeriesID = id
+                    )
                 }
             }
         }

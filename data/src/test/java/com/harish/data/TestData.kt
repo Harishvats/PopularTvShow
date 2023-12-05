@@ -68,18 +68,12 @@ object TestData {
         tagline = "",
         languages = listOf("en"),
         episodeRunTime = listOf(),
-        genres = listOf(),
         homepage = "homepage",
         inProduction = true,
-        lastAirDate = "202033", networks = listOf(),
-        numberOfEpisodes = 15, numberOfSeasons = 3, productionCompanies = listOf(),
-        seasons = listOf(),
-        spokenLanguages = listOf(),
-        productionCountries = listOf(),
+        lastAirDate = "202033",
+        numberOfEpisodes = 15, numberOfSeasons = 3,
         type = "type",
         status = "status",
-        lastEpisodeToAir = null,
-        nextEpisodeToAir = null
     )
 
     val tvShowDetailsModel = TvShowDetailsModel(
