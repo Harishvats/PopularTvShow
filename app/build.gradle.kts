@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.android)
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
-
 }
 
 android {
@@ -49,11 +48,10 @@ android {
 
 dependencies {
 
-    implementation(project(mapOf("path" to ":tvshows")))
+    implementation(project(mapOf("path" to ":presentation")))
     implementation(libs.core.ktx)
 
     implementation(libs.hilt.android)
     implementation(project(mapOf("path" to ":data")))
     kapt(libs.hilt.android.compiler)
-
 }

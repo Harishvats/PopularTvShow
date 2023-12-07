@@ -12,5 +12,7 @@ import dagger.hilt.android.components.ViewModelComponent
 abstract class RepositoryModule {
 
     @Binds
-    abstract fun bindPopularTvShowRepository(popularTvShowRepositoryImpl: PopularTvShowRepositoryImpl): PopularTvShowRepository
+    abstract fun bindPopularTvShowRepository(
+        popularTvShowRepositoryImpl: PopularTvShowRepositoryImpl
+    ): PopularTvShowRepository
 }

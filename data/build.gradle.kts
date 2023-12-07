@@ -18,7 +18,6 @@ android {
         consumerProguardFiles("consumer-rules.pro")
         buildConfigField("String", "API_KEY", "\"d9e3ce1b40d4e87778c9f7de6a76d305\"")
         buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
-
     }
 
     buildTypes {
@@ -44,25 +43,17 @@ android {
 
 dependencies {
 
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
-    implementation(libs.material)
-
     implementation(libs.hilt.android)
-    implementation(project(mapOf("path" to ":core")))
     implementation(project(mapOf("path" to ":domain")))
     kapt(libs.hilt.android.compiler)
 
-    implementation (libs.retrofit)
+    implementation(libs.retrofit)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.okhttp)
 
-    implementation (libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.junit)
-    testImplementation( libs.mockk)
-    testImplementation (libs.kotlinx.coroutines.test)
-
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
 }

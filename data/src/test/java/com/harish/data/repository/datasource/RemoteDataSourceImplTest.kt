@@ -8,40 +8,35 @@ import com.harish.data.TestData.tvShowDetailsDTO
 import com.harish.data.TestData.tvShowDetailsModel
 import com.harish.data.TestData.tvShowListDTO
 import com.harish.data.TestData.tvShowListModel
-import com.harish.data.api.NetworkService
-import com.harish.data.mapper.TvShowDetailDtoMapper
-import com.harish.data.mapper.TvShowListDTOMapper
+import com.harish.data.api.APIService
 import io.mockk.coEvery
 import io.mockk.mockk
+import java.io.IOException
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import retrofit2.HttpException
 import retrofit2.Response
-import java.io.IOException
 
 class RemoteDataSourceImplTest {
 
-    private val networkService: NetworkService = mockk()
-    private val tvShowListDTOMapper: TvShowListDTOMapper = mockk()
-    private val tvShowDetailDtoMapper: TvShowDetailDtoMapper = mockk()
+    private val apiService: APIService = mockk()
 
     private lateinit var remoteDataSourceImpl: RemoteDataSource
 
     @Before
     fun setUp() {
         remoteDataSourceImpl =
-            RemoteDataSourceImpl(networkService, tvShowListDTOMapper, tvShowDetailDtoMapper)
+            RemoteDataSourceImpl(apiService)
     }
-
 
     @Test
     fun `getPopularTvShows() on success returns Result of TvShowListModel`() = runBlocking {
-        coEvery { networkService.getPopularTvShows(BuildConfig.API_KEY) } returns Response.success(
+        coEvery { apiService.getPopularTvShows(BuildConfig.API_KEY) } returns Response.success(
             tvShowListDTO
         )
-        coEvery { tvShowListDTOMapper.mapFromDTOToDomain(tvShowListDTO) } returns tvShowListModel
+//        coEvery { tvShowListDTOMapper.mapFromDTOToDomain(tvShowListDTO) } returns tvShowListModel
 
         val result = remoteDataSourceImpl.getPopularTvShows()
 
@@ -50,20 +45,17 @@ class RemoteDataSourceImplTest {
 
     @Test
     fun `getPopularTvShows() on failure returns failure message as a Throwable`() = runBlocking {
-
-        coEvery { networkService.getPopularTvShows(BuildConfig.API_KEY) } returns listErrorResponse
+        coEvery { apiService.getPopularTvShows(BuildConfig.API_KEY) } returns listErrorResponse
 
         val result = remoteDataSourceImpl.getPopularTvShows()
 
         assert(result.isFailure)
     }
 
-
     @Test
     fun `getPopularTvShows() on HttpException in api call returns failure Result with exception message`() =
         runBlocking {
-
-            coEvery { networkService.getPopularTvShows(BuildConfig.API_KEY) } throws HttpException(
+            coEvery { apiService.getPopularTvShows(BuildConfig.API_KEY) } throws HttpException(
                 listErrorResponse
             )
 
@@ -75,8 +67,7 @@ class RemoteDataSourceImplTest {
     @Test
     fun `getPopularTvShows() on IOException in api call returns failure Result with exception message`() =
         runBlocking {
-
-            coEvery { networkService.getPopularTvShows(BuildConfig.API_KEY) } throws IOException(
+            coEvery { apiService.getPopularTvShows(BuildConfig.API_KEY) } throws IOException(
                 IOResponseErrorMessage
             )
 
@@ -85,42 +76,39 @@ class RemoteDataSourceImplTest {
             assert(result.isFailure)
         }
 
-
     @Test
     fun `getTvShowDetails() on success returns Result of TvShowDetailsModel`() = runBlocking {
         coEvery {
-            networkService.getTvShowDetails(
+            apiService.getTvShowDetails(
                 100,
                 BuildConfig.API_KEY
             )
         } returns Response.success(
             tvShowDetailsDTO
         )
-        coEvery { tvShowDetailDtoMapper.mapFromDTOToDomain(tvShowDetailsDTO) } returns tvShowDetailsModel
+//        coEvery { tvShowDetailDtoMapper.mapFromDTOToDomain(tvShowDetailsDTO) } returns tvShowDetailsModel
 
         val result = remoteDataSourceImpl.getTvShowDetails(100)
 
         assertEquals(result, Result.success(tvShowDetailsModel))
     }
 
-
     @Test
     fun `getTvShowDetails() on failure returns failure message as a Throwable`() = runBlocking {
-
-        coEvery { networkService.getTvShowDetails(100, BuildConfig.API_KEY) } returns detailsErrorResponse
+        coEvery {
+            apiService.getTvShowDetails(100, BuildConfig.API_KEY)
+        } returns detailsErrorResponse
 
         val result = remoteDataSourceImpl.getTvShowDetails(100)
 
         assert(result.isFailure)
     }
 
-
     @Test
     fun `getTvShowDetails() on HttpException in api call returns failure Result with exception message`() =
         runBlocking {
-
             coEvery {
-                networkService.getTvShowDetails(
+                apiService.getTvShowDetails(
                     100,
                     BuildConfig.API_KEY
                 )
@@ -136,9 +124,8 @@ class RemoteDataSourceImplTest {
     @Test
     fun `getTvShowDetails() on IOException in api call returns failure Result with exception message`() =
         runBlocking {
-
             coEvery {
-                networkService.getTvShowDetails(
+                apiService.getTvShowDetails(
                     100,
                     BuildConfig.API_KEY
                 )
@@ -150,5 +137,4 @@ class RemoteDataSourceImplTest {
 
             assert(result.isFailure)
         }
-
 }

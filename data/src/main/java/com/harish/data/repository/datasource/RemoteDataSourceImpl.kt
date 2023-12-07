@@ -1,27 +1,23 @@
 package com.harish.data.repository.datasource
 
 import com.harish.data.BuildConfig
-import com.harish.data.api.NetworkService
-import com.harish.data.mapper.TvShowDetailDtoMapper
-import com.harish.data.mapper.TvShowListDTOMapper
+import com.harish.data.api.APIService
+import com.harish.data.mapper.toDomainModel
 import com.harish.domain.model.TvShowDetailsModel
 import com.harish.domain.model.TvShowListModel
+import javax.inject.Inject
 import okio.IOException
 import retrofit2.HttpException
-import javax.inject.Inject
 
 class RemoteDataSourceImpl @Inject constructor(
-    private val networkService: NetworkService,
-    private val tvShowListDTOMapper: TvShowListDTOMapper,
-    private val tvShowDetailDtoMapper: TvShowDetailDtoMapper
+    private val apiService: APIService
 ) : RemoteDataSource {
     override suspend fun getPopularTvShows(): Result<TvShowListModel> {
         return try {
-            val response = networkService.getPopularTvShows(BuildConfig.API_KEY)
+            val response = apiService.getPopularTvShows(BuildConfig.API_KEY)
             if (response.isSuccessful) {
-
                 val body = response.body()
-                Result.success(body?.let { tvShowListDTOMapper.mapFromDTOToDomain(it) }!!)
+                Result.success(body?.toDomainModel()!!)
             } else {
                 Result.failure(Throwable(response.message()))
             }
@@ -30,15 +26,14 @@ class RemoteDataSourceImpl @Inject constructor(
         } catch (e: IOException) {
             Result.failure(e)
         }
-
     }
 
     override suspend fun getTvShowDetails(seriesId: Int): Result<TvShowDetailsModel> {
         return try {
-            val response = networkService.getTvShowDetails(seriesId, BuildConfig.API_KEY)
+            val response = apiService.getTvShowDetails(seriesId, BuildConfig.API_KEY)
             if (response.isSuccessful) {
                 val body = response.body()
-                Result.success(body?.let { tvShowDetailDtoMapper.mapFromDTOToDomain(it) }!!)
+                Result.success(body?.toDomainModel()!!)
             } else {
                 Result.failure(Throwable(response.message()))
             }
@@ -49,3 +44,5 @@ class RemoteDataSourceImpl @Inject constructor(
         }
     }
 }
+
+// TODO: Breaking DRY Principle. Create a wrapper class for it.

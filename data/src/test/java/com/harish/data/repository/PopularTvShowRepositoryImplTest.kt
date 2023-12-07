@@ -26,10 +26,9 @@ class PopularTvShowRepositoryImplTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `getPopularTvShows() returns success Result of TvListModel`()= runTest{
-
+    fun `getPopularTvShows() returns success Result of TvListModel`() = runTest {
         coEvery { remoteDataSource.getPopularTvShows() } returns Result.success(tvShowListModel)
-        val result=popularTvShowRepository.getPopularTvShows()
+        val result = popularTvShowRepository.getPopularTvShows()
 
         result.onSuccess {
             assertEquals(it.tvShowModelList[0].name, tvShowListModel.tvShowModelList[0].name)
@@ -38,14 +37,14 @@ class PopularTvShowRepositoryImplTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `getTvShowDetails() returns success Result of TvShowDetailsModel`()= runTest{
-
-        coEvery { remoteDataSource.getTvShowDetails(100) } returns Result.success(tvShowDetailsModel)
-        val result=popularTvShowRepository.getTvShowDetails(100)
+    fun `getTvShowDetails() returns success Result of TvShowDetailsModel`() = runTest {
+        coEvery {
+            remoteDataSource.getTvShowDetails(100)
+        } returns Result.success(tvShowDetailsModel)
+        val result = popularTvShowRepository.getTvShowDetails(100)
 
         result.onSuccess {
             assertEquals(it.name, tvShowModel.name)
         }
     }
-
 }
