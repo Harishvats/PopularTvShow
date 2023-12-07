@@ -12,9 +12,8 @@ import com.harish.tvshows.model.TvShowUiModel
 fun TvShowGrid(
     tvShowList: List<TvShowUiModel>,
     selectedTvShow: (Int, String) -> Unit,
-    modifier: Modifier= Modifier
+    modifier: Modifier = Modifier
 ) {
-
     LazyVerticalGrid(
         modifier = modifier,
         columns = GridCells.Fixed(2),
@@ -23,5 +22,6 @@ fun TvShowGrid(
             items(tvShowList.size) {
                 TvShowGridItem(tvShow = tvShowList[it], selectedTvShow)
             }
-        })
+        }
+    )
 }

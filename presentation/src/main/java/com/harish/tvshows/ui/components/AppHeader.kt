@@ -27,19 +27,18 @@ fun AppHeader(title: String, isSecondaryHeader: Boolean, onBackClick: () -> Unit
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = Color.Transparent,
+            titleContentColor = Color.Transparent
         ),
         navigationIcon = {
             if (isSecondaryHeader) {
                 IconButton(onClick = { onBackClick() }) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = "Back",
+                        contentDescription = "Back"
                     )
                 }
             }
         }
 
     )
-
 }

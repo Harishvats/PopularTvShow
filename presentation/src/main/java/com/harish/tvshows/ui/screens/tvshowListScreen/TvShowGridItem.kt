@@ -20,13 +20,12 @@ import com.harish.tvshows.ui.components.CustomText
 
 @Composable
 fun TvShowGridItem(tvShow: TvShowUiModel, selectedTvShow: (Int, String) -> Unit) {
-
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp,
+            defaultElevation = 6.dp
         )
     ) {
         Column(
@@ -52,7 +51,8 @@ fun TvShowGridItem(tvShow: TvShowUiModel, selectedTvShow: (Int, String) -> Unit)
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(4.dp),
-                color = Color.Black, maxLines = 1
+                color = Color.Black,
+                maxLines = 1
             )
         }
     }

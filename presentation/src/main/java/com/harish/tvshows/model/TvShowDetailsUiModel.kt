@@ -12,4 +12,3 @@ data class TvShowDetailsUiModel(
     val voteAverage: Double,
     val voteCount: Int
 )
-

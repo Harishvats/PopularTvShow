@@ -14,11 +14,14 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun LoadingUI() {
-    Column(modifier = Modifier.fillMaxSize(),
+    Column(
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally) {
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         CircularProgressIndicator(
-            modifier = Modifier.width(100.dp).height(100.dp), trackColor = MaterialTheme.colorScheme.surfaceVariant
+            modifier = Modifier.width(100.dp).height(100.dp),
+            trackColor = MaterialTheme.colorScheme.surfaceVariant
         )
     }
 }

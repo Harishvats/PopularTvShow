@@ -7,8 +7,11 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun BaseScreen(
-    title: String, isSecondaryHeader: Boolean, onBackClick: () -> Unit,
-    contentScreen:@Composable ()->Unit) {
+    title: String,
+    isSecondaryHeader: Boolean,
+    onBackClick: () -> Unit,
+    contentScreen: @Composable () -> Unit
+) {
     Column(modifier = Modifier.fillMaxWidth()) {
         AppHeader(title, isSecondaryHeader, onBackClick)
         contentScreen()
