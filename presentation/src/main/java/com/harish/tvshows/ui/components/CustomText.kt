@@ -11,7 +11,7 @@ fun CustomText(
     text: String,
     style: TextStyle,
     modifier: Modifier,
-    color: Color,
+    color: Color=Color.Black,
     maxLines: Int = Int.MAX_VALUE
 ) {
     Text(
