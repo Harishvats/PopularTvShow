@@ -12,11 +12,13 @@ import com.harish.news.R
 import com.harish.tvshows.ui.components.BaseScreen
 import com.harish.tvshows.ui.screens.tvShowDetailsScreen.TvShowDetailsScreen
 import com.harish.tvshows.ui.screens.tvshowListScreen.TvShowListScreen
-import com.harish.tvshows.utils.AppConstants.Companion.SELECTED_TV_SHOW_ID
-import com.harish.tvshows.utils.AppConstants.Companion.SELECTED_TV_SHOW_TITLE
 
 @Composable
 fun AppNavigationHost(navController: NavHostController = rememberNavController()) {
+
+    val selectedTvShowID = "selected_tv_show_id"
+    val selectedTvShowTitle = "title"
+
     NavHost(
         navController,
         startDestination = NavigationDestination.TvShowListScreenDestination.destination
@@ -36,17 +38,17 @@ fun AppNavigationHost(navController: NavHostController = rememberNavController()
         }
 
         composable(
-            route = "${NavigationDestination.TvShowDetailScreenDestination.destination}/{$SELECTED_TV_SHOW_ID}/{$SELECTED_TV_SHOW_TITLE}",
+            route = "${NavigationDestination.TvShowDetailScreenDestination.destination}/{$selectedTvShowID}/{$selectedTvShowTitle}",
             arguments = listOf(
-                navArgument(SELECTED_TV_SHOW_ID) {
+                navArgument(selectedTvShowID) {
                     type = NavType.IntType
                 },
-                navArgument(SELECTED_TV_SHOW_TITLE) {
+                navArgument(selectedTvShowTitle) {
                     type = NavType.StringType
                 }
             )
         ) {
-            it.arguments?.getString(SELECTED_TV_SHOW_TITLE)?.let { it1 ->
+            it.arguments?.getString(selectedTvShowTitle)?.let { it1 ->
                 BaseScreen(
                     title = it1,
                     isSecondaryHeader = true,
@@ -54,7 +56,7 @@ fun AppNavigationHost(navController: NavHostController = rememberNavController()
                         navController.navigateUp()
                     }
                 ) {
-                    val id = it.arguments!!.getInt(SELECTED_TV_SHOW_ID)
+                    val id = it.arguments!!.getInt(selectedTvShowID)
                     TvShowDetailsScreen(
                         selectedTvSeriesID = id
                     )
@@ -63,3 +65,4 @@ fun AppNavigationHost(navController: NavHostController = rememberNavController()
         }
     }
 }
+

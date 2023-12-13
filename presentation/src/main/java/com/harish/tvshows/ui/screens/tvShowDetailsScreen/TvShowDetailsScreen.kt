@@ -26,6 +26,9 @@ fun TvShowDetailsScreen(
     viewModel: TvShowDetailsViewModel = hiltViewModel(),
     selectedTvSeriesID: Int
 ) {
+    val context = LocalContext.current
+    val result by viewModel.state.collectAsState()
+
     LaunchedEffect(
         key1 = viewModel.isApiSuccessful,
         block = {
@@ -35,8 +38,6 @@ fun TvShowDetailsScreen(
         }
     )
 
-    val result by viewModel.state.collectAsState()
-    val context = LocalContext.current
     when (result) {
         is TvShowDetailsScreenState.Loading ->{
             Column(

@@ -1,12 +1,15 @@
 package com.harish.tvshows.navigation
 
-import com.harish.tvshows.utils.AppConstants
-
 sealed class NavigationDestination(val destination: String) {
     object TvShowListScreenDestination : NavigationDestination(
-        AppConstants.TV_SHOW_LIST_SCREEN_DESTINATION
+        TV_SHOW_LIST_SCREEN_DESTINATION
     )
     object TvShowDetailScreenDestination : NavigationDestination(
-        AppConstants.TV_SHOW_DETAIL_SCREEN_DESTINATION
+        TV_SHOW_DETAIL_SCREEN_DESTINATION
     )
+    companion object {
+        const val TV_SHOW_LIST_SCREEN_DESTINATION = "tv_show_list_screen"
+        const val TV_SHOW_DETAIL_SCREEN_DESTINATION = "tv_show_detail_screen"
+    }
+
 }

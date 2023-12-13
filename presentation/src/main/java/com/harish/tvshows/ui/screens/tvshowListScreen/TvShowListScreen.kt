@@ -26,14 +26,16 @@ fun TvShowListScreen(
     viewModel: TvShowListViewModel = hiltViewModel(),
     selectedTvShow: (Int, String) -> Unit
 ) {
+
+    val result by viewModel.state.collectAsState()
+    val context = LocalContext.current
+
     LaunchedEffect(key1 = viewModel.isApiSuccessful, block = {
         viewModel.sendEvent(
             TvShowListScreenIntent.FetchTvShowList
         )
     })
 
-    val result by viewModel.state.collectAsState()
-    val context = LocalContext.current
     when (result) {
         is TvShowListScreenViewState.Error -> Toast.makeText(
             context,

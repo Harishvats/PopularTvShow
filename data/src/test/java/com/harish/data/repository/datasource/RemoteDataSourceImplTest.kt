@@ -11,13 +11,13 @@ import com.harish.data.TestData.tvShowListModel
 import com.harish.data.api.APIService
 import io.mockk.coEvery
 import io.mockk.mockk
-import java.io.IOException
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import retrofit2.HttpException
 import retrofit2.Response
+import java.io.IOException
 
 class RemoteDataSourceImplTest {
 
@@ -36,8 +36,6 @@ class RemoteDataSourceImplTest {
         coEvery { apiService.getPopularTvShows(BuildConfig.API_KEY) } returns Response.success(
             tvShowListDTO
         )
-//        coEvery { tvShowListDTOMapper.mapFromDTOToDomain(tvShowListDTO) } returns tvShowListModel
-
         val result = remoteDataSourceImpl.getPopularTvShows()
 
         assertEquals(result, Result.success(tvShowListModel))
@@ -86,7 +84,6 @@ class RemoteDataSourceImplTest {
         } returns Response.success(
             tvShowDetailsDTO
         )
-//        coEvery { tvShowDetailDtoMapper.mapFromDTOToDomain(tvShowDetailsDTO) } returns tvShowDetailsModel
 
         val result = remoteDataSourceImpl.getTvShowDetails(100)
 
