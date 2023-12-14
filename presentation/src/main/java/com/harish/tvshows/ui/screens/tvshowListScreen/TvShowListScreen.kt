@@ -17,48 +17,61 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.harish.tvshows.ui.screens.tvshowListScreen.state.TvShowListScreenIntent
-import com.harish.tvshows.ui.screens.tvshowListScreen.state.TvShowListScreenViewState
+import com.harish.tvshows.ui.screens.tvshowListScreen.contract.TvShowListScreenContract
 import com.harish.tvshows.ui.screens.tvshowListScreen.viewmodel.TvShowListViewModel
 
 @Composable
 fun TvShowListScreen(
-    viewModel: TvShowListViewModel = hiltViewModel(),
-    selectedTvShow: (Int, String) -> Unit
+    viewModel: TvShowListViewModel = hiltViewModel(), selectedTvShow: (Int, String) -> Unit
 ) {
 
-    val result by viewModel.state.collectAsState()
+    val result by viewModel.viewState.collectAsState()
     val context = LocalContext.current
 
     LaunchedEffect(key1 = viewModel.isApiSuccessful, block = {
         viewModel.sendEvent(
-            TvShowListScreenIntent.FetchTvShowList
+            TvShowListScreenContract.ViewIntent.FetchTvShowList
         )
+
+        viewModel.sideEffect.collect {
+            if (it is TvShowListScreenContract.SideEffect.NavigateToDetailsScreen) {
+                selectedTvShow(it.seriesId, it.showName)
+            }
+        }
     })
 
     when (result) {
-        is TvShowListScreenViewState.Error -> Toast.makeText(
+        is TvShowListScreenContract.ViewState.Error -> Toast.makeText(
             context,
-            (result as TvShowListScreenViewState.Error).message,
+            (result as TvShowListScreenContract.ViewState.Error).message,
             Toast.LENGTH_SHORT
         ).show()
 
-        is TvShowListScreenViewState.Loading -> {
+        is TvShowListScreenContract.ViewState.Loading -> {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 CircularProgressIndicator(
-                    modifier = Modifier.width(100.dp).height(100.dp),
+                    modifier = Modifier
+                        .width(100.dp)
+                        .height(100.dp),
                     trackColor = MaterialTheme.colorScheme.surfaceVariant
                 )
             }
         }
 
-        is TvShowListScreenViewState.Success -> {
-            val value = (result as TvShowListScreenViewState.Success).data.tvShowModelList
-            TvShowGrid(tvShowList = value, selectedTvShow = selectedTvShow)
+        is TvShowListScreenContract.ViewState.Success -> {
+            val value = (result as TvShowListScreenContract.ViewState.Success).data.tvShowModelList
+            TvShowGrid(tvShowList = value, tvShowClicked = { seriesID, showName ->
+                viewModel.sendEvent(
+                    TvShowListScreenContract.ViewIntent.OnTvShowClicked(
+                        seriesID, showName
+                    )
+                )
+
+            })
         }
     }
 }

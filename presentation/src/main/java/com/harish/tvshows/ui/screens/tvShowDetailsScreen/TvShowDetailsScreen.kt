@@ -17,8 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.harish.tvshows.ui.screens.tvShowDetailsScreen.state.TvShowDetailsIntent
-import com.harish.tvshows.ui.screens.tvShowDetailsScreen.state.TvShowDetailsScreenState
+import com.harish.tvshows.ui.screens.tvShowDetailsScreen.contract.TvShowDetailScreenContract
 import com.harish.tvshows.ui.screens.tvShowDetailsScreen.viewmodel.TvShowDetailsViewModel
 
 @Composable
@@ -27,19 +26,19 @@ fun TvShowDetailsScreen(
     selectedTvSeriesID: Int
 ) {
     val context = LocalContext.current
-    val result by viewModel.state.collectAsState()
+    val result by viewModel.viewState.collectAsState()
 
     LaunchedEffect(
         key1 = viewModel.isApiSuccessful,
         block = {
             viewModel.sendEvent(
-                TvShowDetailsIntent.FetchTvShowDetails(selectedTvSeriesID)
+                TvShowDetailScreenContract.ViewIntent.FetchTvShowDetails(selectedTvSeriesID)
             )
         }
     )
 
     when (result) {
-        is TvShowDetailsScreenState.Loading ->{
+        is TvShowDetailScreenContract.ViewState.Loading ->{
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -52,16 +51,16 @@ fun TvShowDetailsScreen(
             }
         }
 
-        is TvShowDetailsScreenState.Error -> {
+        is TvShowDetailScreenContract.ViewState.Error -> {
             Toast.makeText(
                 context,
-                (result as TvShowDetailsScreenState.Error).message,
+                (result as TvShowDetailScreenContract.ViewState.Error).message,
                 Toast.LENGTH_SHORT
             ).show()
         }
 
-        is TvShowDetailsScreenState.Success -> {
-            TvShowDetailCard(model = (result as TvShowDetailsScreenState.Success).data)
+        is TvShowDetailScreenContract.ViewState.Success -> {
+            TvShowDetailCard(model = (result as TvShowDetailScreenContract.ViewState.Success).data)
         }
     }
 }

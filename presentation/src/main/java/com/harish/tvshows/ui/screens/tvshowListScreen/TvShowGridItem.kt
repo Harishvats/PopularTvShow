@@ -19,7 +19,7 @@ import com.harish.tvshows.ui.components.CustomImage
 import com.harish.tvshows.ui.components.CustomText
 
 @Composable
-fun TvShowGridItem(tvShow: TvShowUiModel, selectedTvShow: (Int, String) -> Unit) {
+fun TvShowGridItem(tvShow: TvShowUiModel, tvShowClicked: (Int, String) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -32,7 +32,7 @@ fun TvShowGridItem(tvShow: TvShowUiModel, selectedTvShow: (Int, String) -> Unit)
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
-                .clickable { selectedTvShow(tvShow.id, tvShow.name) }
+                .clickable { tvShowClicked(tvShow.id, tvShow.name) }
         ) {
             CustomImage(
                 data = tvShow.posterPath,

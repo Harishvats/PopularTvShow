@@ -11,7 +11,7 @@ import com.harish.tvshows.model.TvShowUiModel
 @Composable
 fun TvShowGrid(
     tvShowList: List<TvShowUiModel>,
-    selectedTvShow: (Int, String) -> Unit,
+    tvShowClicked: (Int, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
@@ -20,7 +20,7 @@ fun TvShowGrid(
         contentPadding = PaddingValues(10.dp),
         content = {
             items(tvShowList.size) {
-                TvShowGridItem(tvShow = tvShowList[it], selectedTvShow)
+                TvShowGridItem(tvShow = tvShowList[it], tvShowClicked)
             }
         }
     )

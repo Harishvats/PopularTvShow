@@ -1,46 +1,58 @@
 package com.harish.tvshows.ui.screens.tvShowDetailsScreen.viewmodel
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.harish.core.common.ui.base.BaseViewModel
-import com.harish.core.common.ui.base.ViewIntent
 import com.harish.domain.usecases.GetTvShowDetailsUseCase
 import com.harish.tvshows.mapper.toUiModel
-import com.harish.tvshows.ui.screens.tvShowDetailsScreen.state.TvShowDetailsIntent
-import com.harish.tvshows.ui.screens.tvShowDetailsScreen.state.TvShowDetailsScreenState
+import com.harish.tvshows.ui.screens.tvShowDetailsScreen.contract.TvShowDetailScreenContract
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class TvShowDetailsViewModel @Inject constructor(
-    private val useCase: GetTvShowDetailsUseCase
-) : BaseViewModel() {
-    private val _state =
-        MutableStateFlow<TvShowDetailsScreenState>(TvShowDetailsScreenState.Loading)
-    val state = _state.asStateFlow()
+    private val useCase: GetTvShowDetailsUseCase,
+) : ViewModel(), TvShowDetailScreenContract {
+
+    override fun createInitialState(): TvShowDetailScreenContract.ViewState =
+        TvShowDetailScreenContract.ViewState.Loading
+
+    private val _state = MutableStateFlow(value = createInitialState())
+    private val _sideEffect = Channel<TvShowDetailScreenContract.SideEffect>()
+
+    override val viewState: StateFlow<TvShowDetailScreenContract.ViewState>
+        get() = _state.asStateFlow()
+    override val sideEffect: Flow<TvShowDetailScreenContract.SideEffect>
+        get() = _sideEffect.consumeAsFlow()
+
 
     var isApiSuccessful: Boolean = false
 
-    override fun sendEvent(viewIntent: ViewIntent) {
-        when (viewIntent) {
-            is TvShowDetailsIntent.FetchTvShowDetails -> fetchTvShowDetails(viewIntent.seriesId)
+    override fun sendEvent(viewIntent: TvShowDetailScreenContract.ViewIntent) {
+        if (viewIntent is TvShowDetailScreenContract.ViewIntent.FetchTvShowDetails) {
+            fetchTvShowDetails(viewIntent.seriesId)
         }
     }
 
+
     private fun fetchTvShowDetails(seriesId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            _state.value = TvShowDetailsScreenState.Loading
+            _state.value = TvShowDetailScreenContract.ViewState.Loading
             useCase(seriesId).onSuccess {
                 isApiSuccessful = true
-                _state.value = TvShowDetailsScreenState.Success(
+                _state.value = TvShowDetailScreenContract.ViewState.Success(
                     it.toUiModel()
                 )
             }.onFailure {
                 _state.value =
-                    TvShowDetailsScreenState.Error(it.message ?: "")
+                    TvShowDetailScreenContract.ViewState.Error(it.message ?: "")
             }
         }
     }
