@@ -49,9 +49,8 @@ android {
 dependencies {
 
     implementation(project(mapOf("path" to ":presentation")))
-    implementation(libs.core.ktx)
+    implementation(project(mapOf("path" to ":data")))
 
     implementation(libs.hilt.android)
-    implementation(project(mapOf("path" to ":data")))
     kapt(libs.hilt.android.compiler)
 }
