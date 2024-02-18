@@ -9,7 +9,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.harish.tvshows.navigation.AppNavigationHost
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -17,7 +16,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        runBlocking {
             setContent {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -25,7 +23,6 @@ class MainActivity : ComponentActivity() {
                 ) { AppNavigationHost()
                 }
             }
-        }
     }
 
 }
