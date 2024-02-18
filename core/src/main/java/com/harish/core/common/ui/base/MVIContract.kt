@@ -1,6 +1,6 @@
 package com.harish.core.common.ui.base
 
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 
 interface MVIContract<ViewState, ViewIntent, SideEffect> {
@@ -9,6 +9,6 @@ interface MVIContract<ViewState, ViewIntent, SideEffect> {
 
     val viewState: StateFlow<ViewState>
 
-    val sideEffect: Flow<SideEffect>
+    val sideEffect: SharedFlow<SideEffect>
 
 }

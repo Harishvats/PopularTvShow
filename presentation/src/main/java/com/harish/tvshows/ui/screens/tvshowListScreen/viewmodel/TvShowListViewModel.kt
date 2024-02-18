@@ -7,9 +7,9 @@ import com.harish.tvshows.mapper.toUiModel
 import com.harish.tvshows.ui.screens.tvshowListScreen.contract.TvShowListScreenContract
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,7 +29,7 @@ class TvShowListViewModel @Inject constructor(
 
     override val viewState: StateFlow<TvShowListScreenContract.ViewState>
         get() = _state.asStateFlow()
-    override val sideEffect: Flow<TvShowListScreenContract.SideEffect>
+    override val sideEffect: SharedFlow<TvShowListScreenContract.SideEffect>
         get() = _sideEffect.asSharedFlow()
 
 

@@ -7,9 +7,9 @@ import com.harish.tvshows.mapper.toUiModel
 import com.harish.tvshows.ui.screens.tvShowDetailsScreen.contract.TvShowDetailScreenContract
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,7 +29,7 @@ class TvShowDetailsViewModel @Inject constructor(
 
     override val viewState: StateFlow<TvShowDetailScreenContract.ViewState>
         get() = _state.asStateFlow()
-    override val sideEffect: Flow<TvShowDetailScreenContract.SideEffect>
+    override val sideEffect: SharedFlow<TvShowDetailScreenContract.SideEffect>
         get() = _sideEffect.asSharedFlow()
 
 
@@ -51,8 +51,7 @@ class TvShowDetailsViewModel @Inject constructor(
                     it.toUiModel()
                 )
             }.onFailure {
-                _state.value =
-                    TvShowDetailScreenContract.ViewState.Error(it.message ?: "")
+                _state.value = TvShowDetailScreenContract.ViewState.Error(it.message ?: "")
             }
         }
     }
