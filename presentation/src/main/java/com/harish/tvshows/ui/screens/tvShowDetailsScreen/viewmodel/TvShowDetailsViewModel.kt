@@ -7,12 +7,12 @@ import com.harish.tvshows.mapper.toUiModel
 import com.harish.tvshows.ui.screens.tvShowDetailsScreen.contract.TvShowDetailScreenContract
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,12 +25,12 @@ class TvShowDetailsViewModel @Inject constructor(
         TvShowDetailScreenContract.ViewState.Loading
 
     private val _state = MutableStateFlow(value = createInitialState())
-    private val _sideEffect = Channel<TvShowDetailScreenContract.SideEffect>()
+    private val _sideEffect = MutableSharedFlow<TvShowDetailScreenContract.SideEffect>()
 
     override val viewState: StateFlow<TvShowDetailScreenContract.ViewState>
         get() = _state.asStateFlow()
     override val sideEffect: Flow<TvShowDetailScreenContract.SideEffect>
-        get() = _sideEffect.consumeAsFlow()
+        get() = _sideEffect.asSharedFlow()
 
 
     var isApiSuccessful: Boolean = false

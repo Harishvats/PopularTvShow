@@ -7,12 +7,12 @@ import com.harish.tvshows.mapper.toUiModel
 import com.harish.tvshows.ui.screens.tvshowListScreen.contract.TvShowListScreenContract
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,28 +25,29 @@ class TvShowListViewModel @Inject constructor(
         TvShowListScreenContract.ViewState.Loading
 
     private val _state = MutableStateFlow(value = createInitialState())
-    private val _sideEffect = Channel<TvShowListScreenContract.SideEffect>()
+    private val _sideEffect = MutableSharedFlow<TvShowListScreenContract.SideEffect>()
 
     override val viewState: StateFlow<TvShowListScreenContract.ViewState>
         get() = _state.asStateFlow()
     override val sideEffect: Flow<TvShowListScreenContract.SideEffect>
-        get() = _sideEffect.receiveAsFlow()
+        get() = _sideEffect.asSharedFlow()
 
 
     var isApiSuccessful: Boolean = false
 
     override fun sendEvent(viewIntent: TvShowListScreenContract.ViewIntent) {
-        if (viewIntent is TvShowListScreenContract.ViewIntent.FetchTvShowList) {
-            getTvShowList()
-        }
-        if (viewIntent is TvShowListScreenContract.ViewIntent.OnTvShowClicked) {
-            viewModelScope.launch {
-                _sideEffect.send(
-                    TvShowListScreenContract.SideEffect.NavigateToDetailsScreen(
-                        viewIntent.seriesId,
-                        viewIntent.showName
+        when (viewIntent) {
+            is TvShowListScreenContract.ViewIntent.FetchTvShowList -> getTvShowList()
+            is TvShowListScreenContract.ViewIntent.OnTvShowClicked -> {
+                viewModelScope.launch {
+                    _sideEffect.emit(
+                        TvShowListScreenContract.SideEffect.NavigateToDetailsScreen(
+                            viewIntent.seriesId,
+                            viewIntent.showName
+                        )
                     )
-                )
+                }
+
             }
         }
     }

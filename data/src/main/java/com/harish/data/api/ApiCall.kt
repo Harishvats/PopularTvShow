@@ -1,7 +1,6 @@
 package com.harish.data.api
 
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import retrofit2.Response
@@ -11,7 +10,7 @@ import java.io.IOException
 suspend fun <T, R> apiCall(
     apiCall: suspend () -> Response<T>,
     mapper: (T) -> R,
-    ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    ioDispatcher: CoroutineDispatcher
 ): Result<R> =
     withContext(ioDispatcher) {
         try {
@@ -28,7 +27,7 @@ suspend fun <T, R> apiCall(
                 is HttpException -> Result.failure(exception)
                 is IOException -> Result.failure(exception)
                 else -> {
-                    Result.failure<Exception>(exception)
+                    Result.failure(exception)
                 }
             }
         } as Result<R>
