@@ -6,7 +6,6 @@ import com.harish.domain.usecases.GetPopularTvShowsUseCase
 import com.harish.tvshows.mapper.toUiModel
 import com.harish.tvshows.ui.screens.tvshowListScreen.contract.TvShowListScreenContract
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -36,6 +35,7 @@ class TvShowListViewModel @Inject constructor(
     var isApiSuccessful: Boolean = false
 
     override fun sendEvent(viewIntent: TvShowListScreenContract.ViewIntent) {
+
         when (viewIntent) {
             is TvShowListScreenContract.ViewIntent.FetchTvShowList -> getTvShowList()
             is TvShowListScreenContract.ViewIntent.OnTvShowClicked -> {
@@ -53,7 +53,7 @@ class TvShowListViewModel @Inject constructor(
     }
 
     private fun getTvShowList() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             _state.value = TvShowListScreenContract.ViewState.Loading
 
             useCase().onSuccess {
@@ -67,6 +67,5 @@ class TvShowListViewModel @Inject constructor(
             }
         }
     }
-
 
 }

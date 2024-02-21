@@ -1,5 +1,6 @@
 package com.harish.data.repository.datasource
 
+import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.harish.data.BuildConfig
 import com.harish.data.TestData.IOResponseErrorMessage
 import com.harish.data.TestData.detailsErrorResponse
@@ -11,9 +12,14 @@ import com.harish.data.TestData.tvShowListModel
 import com.harish.data.api.APIService
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.setMain
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import retrofit2.HttpException
 import retrofit2.Response
@@ -24,11 +30,17 @@ class RemoteDataSourceImplTest {
     private val apiService: APIService = mockk()
 
     private lateinit var remoteDataSourceImpl: RemoteDataSource
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val testDispatcher = UnconfinedTestDispatcher()
 
+    @get:Rule
+    private val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @ExperimentalCoroutinesApi
     @Before
     fun setUp() {
+        Dispatchers.setMain(testDispatcher)
         remoteDataSourceImpl =
-            RemoteDataSourceImpl(apiService)
+            RemoteDataSourceImpl(apiService,testDispatcher)
     }
 
     @Test

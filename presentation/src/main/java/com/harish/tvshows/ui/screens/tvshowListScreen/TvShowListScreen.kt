@@ -38,9 +38,11 @@ fun TvShowListScreen(
                 selectedTvShow(it.seriesId, it.showName)
             }
         }
-    })
+        })
+
 
     when (result) {
+
         is TvShowListScreenContract.ViewState.Error -> Toast.makeText(
             context,
             (result as TvShowListScreenContract.ViewState.Error).message,
