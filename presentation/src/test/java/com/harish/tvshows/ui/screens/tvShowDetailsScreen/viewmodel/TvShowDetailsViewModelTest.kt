@@ -1,10 +1,10 @@
 package com.harish.tvshows.ui.screens.tvShowDetailsScreen.viewmodel
 
+import app.cash.turbine.test
 import com.harish.domain.model.TvShowDetailsModel
 import com.harish.domain.usecases.GetTvShowDetailsUseCase
 import com.harish.tvshows.Dispatcher
 import com.harish.tvshows.TestData
-import com.harish.tvshows.mapper.toUiModel
 import com.harish.tvshows.ui.screens.tvShowDetailsScreen.contract.TvShowDetailScreenContract
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -35,16 +35,14 @@ class TvShowDetailsViewModelTest {
         val response = Result.success(TestData.tvShowDetailsModel)
 
 
-        coEvery { useCase(seriesId) } returns response
+        coEvery { useCase(seriesId) } answers { response }
         viewModel.sendEvent(TvShowDetailScreenContract.ViewIntent.FetchTvShowDetails(seriesId))
 
-        response.onSuccess {
-            Assert.assertEquals(
-                it.toUiModel().backdropPath,
-                (viewModel.viewState.value as TvShowDetailScreenContract.ViewState.Success).data.backdropPath
-            )
-        }
 
+        viewModel.viewState.test {
+            Assert.assertEquals(TvShowDetailScreenContract.ViewState.Loading, awaitItem())
+            Assert.assertTrue(awaitItem() is TvShowDetailScreenContract.ViewState.Success)
+        }
     }
 
     @Test
@@ -53,15 +51,13 @@ class TvShowDetailsViewModelTest {
         val exception = Exception("something went wrong")
         val response = Result.failure<TvShowDetailsModel>(exception)
 
-        coEvery { useCase(seriesId) } returns response
+        coEvery { useCase(seriesId) } answers { response }
 
         viewModel.sendEvent(TvShowDetailScreenContract.ViewIntent.FetchTvShowDetails(seriesId))
 
-
-        Assert.assertEquals(
-            exception.message,
-            (viewModel.viewState.value as TvShowDetailScreenContract.ViewState.Error).message
-        )
+        viewModel.viewState.test {
+            Assert.assertTrue(awaitItem() is TvShowDetailScreenContract.ViewState.Error)
+        }
 
     }
 

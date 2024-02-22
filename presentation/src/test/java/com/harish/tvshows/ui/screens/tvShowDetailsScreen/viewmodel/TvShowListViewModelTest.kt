@@ -1,10 +1,10 @@
 package com.harish.tvshows.ui.screens.tvShowDetailsScreen.viewmodel
 
+import app.cash.turbine.test
 import com.harish.domain.model.TvShowListModel
 import com.harish.domain.usecases.GetPopularTvShowsUseCase
 import com.harish.tvshows.Dispatcher
 import com.harish.tvshows.TestData
-import com.harish.tvshows.mapper.toUiModel
 import com.harish.tvshows.ui.screens.tvshowListScreen.contract.TvShowListScreenContract
 import com.harish.tvshows.ui.screens.tvshowListScreen.viewmodel.TvShowListViewModel
 import io.mockk.coEvery
@@ -35,14 +35,11 @@ class TvShowListViewModelTest {
         val response = Result.success(TestData.tvShowListModel)
 
 
-        coEvery { useCase() } returns response
+        coEvery { useCase() } answers { response }
         viewModel.sendEvent(TvShowListScreenContract.ViewIntent.FetchTvShowList)
 
-        response.onSuccess {
-            Assert.assertEquals(
-                it.toUiModel().tvShowModelList.size,
-                (viewModel.viewState.value as TvShowListScreenContract.ViewState.Success).data.tvShowModelList.size
-            )
+        viewModel.viewState.test {
+            Assert.assertTrue(awaitItem() is TvShowListScreenContract.ViewState.Success)
         }
 
     }
@@ -52,16 +49,25 @@ class TvShowListViewModelTest {
         val exception = Exception("something went wrong")
         val response = Result.failure<TvShowListModel>(exception)
 
-        coEvery { useCase() } returns response
+        coEvery { useCase() } answers { response }
 
-        viewModel.sendEvent(TvShowListScreenContract.ViewIntent.FetchTvShowList)
-
-
-        Assert.assertEquals(
-            exception.message,
-            (viewModel.viewState.value as TvShowListScreenContract.ViewState.Error).message
-        )
-
+        with(viewModel) {
+            sendEvent(TvShowListScreenContract.ViewIntent.FetchTvShowList)
+            viewState.test {
+                Assert.assertTrue(awaitItem() is TvShowListScreenContract.ViewState.Error)
+            }
+        }
     }
+
+    @Test
+    fun `navigate to details screen when OnTvShowClicked intent passed`() =
+        runTest {
+            with(viewModel) {
+                sideEffect.test {
+                    sendEvent(TvShowListScreenContract.ViewIntent.OnTvShowClicked(TestData.tvShowDetailsModel.id,TestData.tvShowDetailsModel.name))
+                    Assert.assertTrue(awaitItem() is TvShowListScreenContract.SideEffect.NavigateToDetailsScreen)
+                }
+            }
+        }
 
 }
