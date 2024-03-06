@@ -33,7 +33,6 @@ class TvShowDetailsViewModel @Inject constructor(
         get() = _sideEffect.asSharedFlow()
 
 
-    var isApiSuccessful: Boolean = false
 
     override fun sendEvent(viewIntent: TvShowDetailScreenContract.ViewIntent) {
         if (viewIntent is TvShowDetailScreenContract.ViewIntent.FetchTvShowDetails) {
@@ -46,7 +45,6 @@ class TvShowDetailsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _state.value = TvShowDetailScreenContract.ViewState.Loading
             useCase(seriesId).onSuccess {
-                isApiSuccessful = true
                 _state.value = TvShowDetailScreenContract.ViewState.Success(
                     it.toUiModel()
                 )

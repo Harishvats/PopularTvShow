@@ -29,7 +29,7 @@ fun TvShowDetailsScreen(
     val result by viewModel.viewState.collectAsState()
 
     LaunchedEffect(
-        key1 = viewModel.isApiSuccessful,
+        key1 = Unit,
         block = {
             viewModel.sendEvent(
                 TvShowDetailScreenContract.ViewIntent.FetchTvShowDetails(selectedTvSeriesID)

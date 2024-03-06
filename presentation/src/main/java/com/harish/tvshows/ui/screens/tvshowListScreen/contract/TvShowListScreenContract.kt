@@ -14,11 +14,11 @@ interface TvShowListScreenContract :
 
     sealed interface ViewIntent {
         object FetchTvShowList : ViewIntent
-        class OnTvShowClicked(val seriesId: Int, val showName: String) : ViewIntent
+        data class OnTvShowClicked(val seriesId: Int, val showName: String) : ViewIntent
     }
 
     sealed interface SideEffect {
-        class NavigateToDetailsScreen(val seriesId: Int, val showName: String) : SideEffect
+        data class NavigateToDetailsScreen(val seriesId: Int, val showName: String) : SideEffect
     }
 }
 

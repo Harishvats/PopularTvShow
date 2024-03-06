@@ -1,5 +1,6 @@
 package com.harish.tvshows.ui.screens.tvshowListScreen
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,7 +29,7 @@ fun TvShowListScreen(
     val result by viewModel.viewState.collectAsState()
     val context = LocalContext.current
 
-    LaunchedEffect(key1 = viewModel.isApiSuccessful, block = {
+    LaunchedEffect(key1 = Unit, block = {
         viewModel.sendEvent(
             TvShowListScreenContract.ViewIntent.FetchTvShowList
         )
@@ -43,11 +44,15 @@ fun TvShowListScreen(
 
     when (result) {
 
-        is TvShowListScreenContract.ViewState.Error -> Toast.makeText(
-            context,
-            (result as TvShowListScreenContract.ViewState.Error).message,
-            Toast.LENGTH_SHORT
-        ).show()
+        is TvShowListScreenContract.ViewState.Error -> {
+            Toast.makeText(
+                context,
+                (result as TvShowListScreenContract.ViewState.Error).message,
+                Toast.LENGTH_SHORT
+            ).show()
+
+            Log.d("Harish", (result as TvShowListScreenContract.ViewState.Error).message)
+        }
 
         is TvShowListScreenContract.ViewState.Loading -> {
             Column(

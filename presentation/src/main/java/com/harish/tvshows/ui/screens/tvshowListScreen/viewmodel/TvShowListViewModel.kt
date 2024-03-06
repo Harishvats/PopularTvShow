@@ -31,9 +31,6 @@ class TvShowListViewModel @Inject constructor(
     override val sideEffect: SharedFlow<TvShowListScreenContract.SideEffect>
         get() = _sideEffect.asSharedFlow()
 
-
-    var isApiSuccessful: Boolean = false
-
     override fun sendEvent(viewIntent: TvShowListScreenContract.ViewIntent) {
 
         when (viewIntent) {
@@ -57,7 +54,6 @@ class TvShowListViewModel @Inject constructor(
             _state.value = TvShowListScreenContract.ViewState.Loading
 
             useCase().onSuccess {
-                isApiSuccessful = true
                 _state.value = TvShowListScreenContract.ViewState.Success(
                     it.toUiModel()
                 )
