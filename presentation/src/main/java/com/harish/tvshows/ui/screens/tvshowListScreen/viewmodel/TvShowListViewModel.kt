@@ -32,7 +32,6 @@ class TvShowListViewModel @Inject constructor(
         get() = _sideEffect.asSharedFlow()
 
     override fun sendEvent(viewIntent: TvShowListScreenContract.ViewIntent) {
-
         when (viewIntent) {
             is TvShowListScreenContract.ViewIntent.FetchTvShowList -> getTvShowList()
             is TvShowListScreenContract.ViewIntent.OnTvShowClicked -> {
@@ -52,7 +51,6 @@ class TvShowListViewModel @Inject constructor(
     private fun getTvShowList() {
         viewModelScope.launch {
             _state.value = TvShowListScreenContract.ViewState.Loading
-
             useCase().onSuccess {
                 _state.value = TvShowListScreenContract.ViewState.Success(
                     it.toUiModel()

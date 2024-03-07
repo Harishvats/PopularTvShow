@@ -14,11 +14,6 @@ object TestData {
     val listErrorResponse: Response<TvShowListDTO> = Response.error(
         404, "".toResponseBody("application/json".toMediaTypeOrNull())
     )
-    const val IOResponseErrorMessage = "IO Error"
-    val detailsErrorResponse: Response<TvShowDetailsDTO> = Response.error(
-        404, "".toResponseBody("application/json".toMediaTypeOrNull())
-    )
-
     val tvShowDTO = TvShowDTO(
         adult = false,
         backdropPath = "",

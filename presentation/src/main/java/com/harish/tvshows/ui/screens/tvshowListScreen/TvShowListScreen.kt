@@ -1,6 +1,5 @@
 package com.harish.tvshows.ui.screens.tvshowListScreen
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -51,7 +50,6 @@ fun TvShowListScreen(
                 Toast.LENGTH_SHORT
             ).show()
 
-            Log.d("Harish", (result as TvShowListScreenContract.ViewState.Error).message)
         }
 
         is TvShowListScreenContract.ViewState.Loading -> {
