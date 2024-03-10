@@ -5,6 +5,7 @@ import com.harish.domain.model.TvShowListModel
 import com.harish.domain.usecases.GetPopularTvShowsUseCase
 import com.harish.tvshows.Dispatcher
 import com.harish.tvshows.TestData
+import com.harish.tvshows.TestData.errorString
 import com.harish.tvshows.ui.screens.tvshowListScreen.contract.TvShowListScreenContract
 import com.harish.tvshows.ui.screens.tvshowListScreen.viewmodel.TvShowListViewModel
 import io.mockk.coEvery
@@ -33,20 +34,21 @@ class TvShowListViewModelTest {
     @Test
     fun `getTvShowList should update state correctly on success`() = runTest {
         val response = Result.success(TestData.tvShowListModel)
-
-
         coEvery { useCase() } answers { response }
-        viewModel.sendEvent(TvShowListScreenContract.ViewIntent.FetchTvShowList)
 
-        viewModel.viewState.test {
-            Assert.assertTrue(awaitItem() is TvShowListScreenContract.ViewState.Success)
+        with(viewModel) {
+            sendEvent(TvShowListScreenContract.ViewIntent.FetchTvShowList)
+
+            viewState.test {
+                Assert.assertTrue(awaitItem() is TvShowListScreenContract.ViewState.Success)
+            }
         }
 
     }
 
     @Test
     fun `getTvShowList should update state correctly on error`() = runTest {
-        val exception = Exception("something went wrong")
+        val exception = Exception(errorString)
         val response = Result.failure<TvShowListModel>(exception)
 
         coEvery { useCase() } answers { response }

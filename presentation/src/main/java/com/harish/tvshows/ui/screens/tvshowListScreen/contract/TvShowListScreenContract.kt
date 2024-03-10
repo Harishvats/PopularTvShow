@@ -8,8 +8,8 @@ interface TvShowListScreenContract :
     MVIContract<TvShowListScreenContract.ViewState, TvShowListScreenContract.ViewIntent, TvShowListScreenContract.SideEffect> {
     sealed interface ViewState {
         object Loading : ViewState
-        class Success(val data: TvShowListUiModel) : ViewState
-        class Error(val message: String) : ViewState
+        data class Success(val data: TvShowListUiModel) : ViewState
+        data class Error(val message: String) : ViewState
     }
 
     sealed interface ViewIntent {

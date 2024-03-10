@@ -49,5 +49,7 @@ object TestData {
         tagline = "",
     )
 
+    const val errorString="Something went wrong"
+
 
 }

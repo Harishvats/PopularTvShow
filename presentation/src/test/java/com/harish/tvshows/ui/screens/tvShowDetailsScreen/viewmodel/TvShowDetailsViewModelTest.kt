@@ -34,13 +34,13 @@ class TvShowDetailsViewModelTest {
         val seriesId = 100
         val response = Result.success(TestData.tvShowDetailsModel)
 
-
         coEvery { useCase(seriesId) } answers { response }
-        viewModel.sendEvent(TvShowDetailScreenContract.ViewIntent.FetchTvShowDetails(seriesId))
+        with(viewModel) {
+            sendEvent(TvShowDetailScreenContract.ViewIntent.FetchTvShowDetails(seriesId))
 
-
-        viewModel.viewState.test {
-            Assert.assertTrue(awaitItem() is TvShowDetailScreenContract.ViewState.Success)
+            viewState.test {
+                Assert.assertTrue(awaitItem() is TvShowDetailScreenContract.ViewState.Success)
+            }
         }
     }
 
@@ -52,10 +52,12 @@ class TvShowDetailsViewModelTest {
 
         coEvery { useCase(seriesId) } answers { response }
 
-        viewModel.sendEvent(TvShowDetailScreenContract.ViewIntent.FetchTvShowDetails(seriesId))
+        with(viewModel) {
+            sendEvent(TvShowDetailScreenContract.ViewIntent.FetchTvShowDetails(seriesId))
 
-        viewModel.viewState.test {
-            Assert.assertTrue(awaitItem() is TvShowDetailScreenContract.ViewState.Error)
+            viewState.test {
+                Assert.assertTrue(awaitItem() is TvShowDetailScreenContract.ViewState.Error)
+            }
         }
 
     }

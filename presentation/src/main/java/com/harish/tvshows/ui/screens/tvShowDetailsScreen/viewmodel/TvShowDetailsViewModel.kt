@@ -6,7 +6,6 @@ import com.harish.domain.usecases.GetTvShowDetailsUseCase
 import com.harish.tvshows.mapper.toUiModel
 import com.harish.tvshows.ui.screens.tvShowDetailsScreen.contract.TvShowDetailScreenContract
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -42,7 +41,7 @@ class TvShowDetailsViewModel @Inject constructor(
 
 
     private fun fetchTvShowDetails(seriesId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             _state.value = TvShowDetailScreenContract.ViewState.Loading
             useCase(seriesId).onSuccess {
                 _state.value = TvShowDetailScreenContract.ViewState.Success(
