@@ -1,4 +1,4 @@
-package com.harish.tvshows.navigation
+package com.harish.tvshows.ui.navigation
 
 sealed class NavigationDestination(val destination: String) {
     object TvShowListScreenDestination : NavigationDestination(

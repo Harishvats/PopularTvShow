@@ -1,4 +1,4 @@
-package com.harish.core.common.ui.base
+package com.harish.tvshows.base
 
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow

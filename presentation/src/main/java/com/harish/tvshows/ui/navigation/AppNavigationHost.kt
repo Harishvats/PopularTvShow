@@ -1,4 +1,4 @@
-package com.harish.tvshows.navigation
+package com.harish.tvshows.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource

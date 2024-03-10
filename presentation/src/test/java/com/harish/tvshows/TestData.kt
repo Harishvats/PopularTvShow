@@ -18,13 +18,10 @@ object TestData {
         popularity = 220.9
     )
     val tvShowUiModel = TvShowUiModel(
-        backdropPath = "https://image.tmdb.org/t/p/w500/backdropPath",
         id = 100,
         name = "Doremon",
         voteCount = 500,
-        voteAverage = 883.5,
         posterPath = "https://image.tmdb.org/t/p/w500/posterPath",
-        popularity = 220.9
     )
 
     val tvShowListModel = TvShowListModel(tvShowModelList = listOf(tvShowModel))
@@ -49,13 +46,7 @@ object TestData {
         id = 100,
         name = "Doremon",
         overview = "Good kid series",
-        voteCount = 500,
-        voteAverage = 883.5,
-        posterPath = "https://image.tmdb.org/t/p/w500/posterPath",
-        popularity = 220.9,
         tagline = "",
-        languages = listOf("en"),
-        episodeRunTime = listOf(),
     )
 
 

@@ -5,11 +5,8 @@ data class TvShowListUiModel(
 )
 
 data class TvShowUiModel(
-    val backdropPath: String,
     val id: Int,
     val name: String,
-    val popularity: Double,
     val posterPath: String,
-    val voteAverage: Double,
-    val voteCount: Int
+    val voteCount: Int,
 )

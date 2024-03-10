@@ -2,6 +2,7 @@ package com.harish.tvshows.ui.screens.tvshowListScreen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,7 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.harish.news.R
 import com.harish.tvshows.model.TvShowUiModel
 import com.harish.tvshows.ui.components.CustomImage
 import com.harish.tvshows.ui.components.CustomText
@@ -54,6 +57,26 @@ fun TvShowGridItem(tvShow: TvShowUiModel, tvShowClicked: (Int, String) -> Unit) 
                 color = Color.Black,
                 maxLines = 1
             )
+            Row(modifier = Modifier.fillMaxWidth()) {
+                CustomText(
+                   text= stringResource(id = R.string.vote_count),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier
+                        .padding(4.dp),
+                    color = Color.Black,
+                    maxLines = 1
+                )
+
+                CustomText(
+                    tvShow.voteCount.toString(),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier
+                        .padding(4.dp),
+                    color = Color.Black,
+                    maxLines = 1
+                )
+            }
+
         }
     }
 }

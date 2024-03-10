@@ -1,6 +1,6 @@
 package com.harish.tvshows.ui.screens.tvShowDetailsScreen.contract
 
-import com.harish.core.common.ui.base.MVIContract
+import com.harish.tvshows.base.MVIContract
 import com.harish.tvshows.model.TvShowDetailsUiModel
 
 

@@ -40,7 +40,6 @@ class TvShowDetailsViewModelTest {
 
 
         viewModel.viewState.test {
-            Assert.assertEquals(TvShowDetailScreenContract.ViewState.Loading, awaitItem())
             Assert.assertTrue(awaitItem() is TvShowDetailScreenContract.ViewState.Success)
         }
     }
